@@ -13,7 +13,7 @@ function App() {
       <LeftBar />
         
       </div>
-      <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl opacity-65">
+      <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl bg-opacity-75">
         <RightBar />
       </div>
       
