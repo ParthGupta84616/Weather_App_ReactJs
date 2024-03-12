@@ -3,14 +3,14 @@ import sunny from "../images/sunny.png";
 import seacrh from "../images/search.png"
 import RightBottom from './RightBottom';
 
-function RightBar({userData}) {
+function RightBar({data}) {
     return (
         <div className="icon-container">
             <div className="margin  "> </div>
             <div className="icon flex h-1/3 justify-center items-center ">
                 <img src={sunny} alt="Sunny Icon" className="icon size-28 opacity-100 m-4" />
             </div>
-            <div className="dis flex justify-center text-white text-3xl font-mono "> <strong> Sunny </strong> </div>
+            <div className="dis flex justify-center text-white text-3xl font-mono "> <strong>{data.weather} </strong> </div>
             <div className="p-8 -mt-4 rounded-full ">
                 <div className="line border-white border-2 "></div>
             </div>
@@ -30,14 +30,14 @@ function RightBar({userData}) {
             <div className=" ">
                 <div className="flex justify-center mt-4 text-white  ">
                     <div className="second w-3/4  border-gray-600 border-b-2 flex justify-center">
-                        <h1 className='text-2xl font-serif'>Gwalior</h1>
+                        <h1 className='text-2xl font-serif'>{data.city}</h1>
                     </div>
                 </div>
-            <RightBottom label={"Temprature"} value={"10 C" } />
-            <RightBottom label={"Humidity"} value={"10 %"} />
-            <RightBottom label={"Visibility"} value={"100 mi"} />
-            <RightBottom label={"Wind Speed"} value={"10 km/h"} />
-            <RightBottom label={"Clouds"} value={"0%"} />
+            <RightBottom label={"Temprature"} value={`${data.curtemp} C` } />
+            <RightBottom label={"Humidity"} value={`${data.humidity} %` } />
+            <RightBottom label={"Visibility"} value={`${data.visibility} mi` } />
+            <RightBottom label={"Wind Speed"} value={`${data.wind} km/h` } />
+            <RightBottom label={"Clouds"} value={`${data.cloud} %` } />
                 
             </div>
         </div>

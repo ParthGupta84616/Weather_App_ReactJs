@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import bg1 from "./images/1298139.jpg";
 import RightBar from './components/RightBar';
 import LeftBar from './components/LeftBar';
+import sunny from "./images/sunny.png";
+import snow from "./images/Snow.jpg"
 
 function App() {
   const bg = `url(${bg1})`;
@@ -10,6 +12,7 @@ function App() {
   const [city, setCity] = useState(null)
   const [sunset, setSunset] = useState(null)
   const [sunrise, setSunrise] = useState(null)
+  // const [sunset, setsunset] = useState(second)
   const [weather, setWeather] = useState(null)
   const [maxtemp, setMaxtemp] = useState(null)
   const [mintemp, setMintemp] = useState(null)
@@ -18,6 +21,20 @@ function App() {
   const [wind, setWind] = useState(null)
   const [visibility, setvisibility] = useState(null)
   const [cloud, setCloud] = useState(null)
+  const data = {
+      city,
+      country,
+      sunrise,
+      sunset,
+      maxtemp,
+      mintemp,
+      curtemp,
+      humidity,
+      cloud,
+      weather,
+      wind,
+      visibility
+    };
   
 
 
@@ -59,6 +76,7 @@ function App() {
             setSunrise(sunriseIST)
             setUserData(data);
             setSunset(sunsetIST)
+
             setCountry(data.sys.country);
             setCity(data.name)
             setWeather(data.weather[0].main)
@@ -69,6 +87,8 @@ function App() {
             setvisibility(data.visibility)
             setCloud(data.clouds.all)
             setWind(data.wind.speed)
+            
+
           }
         })
         .catch(error => {
@@ -96,14 +116,15 @@ function App() {
       }
     }
   }, []);
-  console.log(userData,country,city,sunrise,sunset,weather,maxtemp,mintemp,curtemp,humidity,wind,visibility,cloud);
+  console.log(data);
+  
   return (
     <div className='flex items-center justify-center' style={{ background : bg , height:"100vh" , width:"100vw" , }}>
       <div className="box w-5/12 h-3/4 border-gray-600 border-2 rounded-xl">
-        <LeftBar userData={userData} />
+        <LeftBar data={data}/>
       </div>
       <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl bg-opacity-75">
-        <RightBar userData={userData} />
+        <RightBar data={data} />
       </div>
     </div>
   );
