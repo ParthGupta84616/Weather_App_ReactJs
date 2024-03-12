@@ -3,7 +3,7 @@ import sunny from "../images/sunny.png";
 import seacrh from "../images/search.png"
 import RightBottom from './RightBottom';
 
-function RightBar() {
+function RightBar({userData}) {
     return (
         <div className="icon-container">
             <div className="margin  "> </div>
@@ -37,6 +37,7 @@ function RightBar() {
             <RightBottom label={"Humidity"} value={"10 %"} />
             <RightBottom label={"Visibility"} value={"100 mi"} />
             <RightBottom label={"Wind Speed"} value={"10 km/h"} />
+            <RightBottom label={"Clouds"} value={"0%"} />
                 
             </div>
         </div>

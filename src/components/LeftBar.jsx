@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import rain from "../images/img1.jpg";
 
-function LeftBar() {
+function LeftBar({userData}) {
     const Bg = `url(${rain})`;
-    console.log(Bg);
+    // console.log(userData.sys);
+    // const [city, setCity] = useState("")
+
     return (
-        <div className='w-full h-full rounded-xl' style={{ background: Bg }}>
-            <div className="upperbox mt- h-4/6">
-                <div className="city flex justify-end text-white text-3xl p-4 -mb-2 font-serif"><strong>Gwalior</strong></div>
-                <div className="country flex justify-end text-white text-3xl mr-4 font-medium"><strong>IN</strong></div>
+        <div className='w-full h-full rounded-xl text-slate-200' style={{ background: Bg }}>
+            <div className="upperbox mt- h-2/6">
+                <div className="city flex justify-end  text-3xl p-4 -mb-2 font-serif"><strong>Hola</strong></div>
+                <div className="country flex justify-end  text-3xl mr-4 font-medium"><strong>IN</strong></div>
             </div>
-            <div className="lower w-full flex border-white p-4 text-white mt-8 ">
+            <div className="upperbox mt- h-1/6">
+                <div className="city flex justify-start  text-3xl p-4 -mb-2 font-serif"><strong>Hola</strong></div>
+                <div className="country flex justify-start  ml-4 text-3xl  font-medium"><strong>IN</strong></div>
+            </div>
+            <div className="upperbox h-1/6">
+                <div className="city flex justify-start  text-3xl font-serif p-4"><strong> Sun Rise</strong></div>
+                <div className="city flex justify-start  text-3xl font-serif ml-4"><strong> Sun Rise</strong></div>
+            </div>
+
+            <div className="lower w-full flex border-white p-4  mt-8 ">
                 <div className="left justify-start w-2/3">
                     <div className="time text-6xl p-2 font-serif">
                         <p>18:16:32</p>
