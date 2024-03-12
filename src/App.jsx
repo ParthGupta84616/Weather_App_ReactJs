@@ -16,7 +16,7 @@ function App() {
   const [curtemp, setCurtemp] = useState(null)
   const [humidity, setHumidity] = useState(null)
   const [wind, setWind] = useState(null)
-  const [Visibility, setvisibility] = useState(null)
+  const [visibility, setvisibility] = useState(null)
   const [cloud, setCloud] = useState(null)
   
 
@@ -39,9 +39,9 @@ function App() {
         .then(response => response.json())
         .then(data => {
           console.log(data);
-          setUserData(data);
+          
           if (data && data.sys && data.sys.country) {
-            setCountry(data.sys.country);
+            
             const sunriseUnixTimestamp = data.sys.sunrise + data.timezone;
             const sunsetUnixTimestamp = data.sys.sunset + data.timezone;
             const sunriseMilliseconds = sunriseUnixTimestamp * 1000;
@@ -57,10 +57,18 @@ function App() {
             const sunriseIST = sunriseDate.toLocaleString("en-IN", options);
             const sunsetIST = sunsetDate.toLocaleString("en-IN", options);
             setSunrise(sunriseIST)
+            setUserData(data);
             setSunset(sunsetIST)
-            
-
-            
+            setCountry(data.sys.country);
+            setCity(data.name)
+            setWeather(data.weather[0].main)
+            setMaxtemp(Math.floor(data.main.temp_max - 273))
+            setMintemp(Math.floor(data.main.temp_min - 273))
+            setCurtemp(Math.floor(data.main.temp - 273))
+            setHumidity(data.main.humidity)
+            setvisibility(data.visibility)
+            setCloud(data.clouds.all)
+            setWind(data.wind.speed)
           }
         })
         .catch(error => {
@@ -88,7 +96,7 @@ function App() {
       }
     }
   }, []);
-  console.log(userData);
+  console.log(userData,country,city,sunrise,sunset,weather,maxtemp,mintemp,curtemp,humidity,wind,visibility,cloud);
   return (
     <div className='flex items-center justify-center' style={{ background : bg , height:"100vh" , width:"100vw" , }}>
       <div className="box w-5/12 h-3/4 border-gray-600 border-2 rounded-xl">
