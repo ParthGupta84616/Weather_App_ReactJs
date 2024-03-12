@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import sunny from "../images/sunny.png"; 
 import seacrh from "../images/search.png"
 import RightBottom from './RightBottom';
 
-function RightBar({data}) {
+function RightBar({ data, search }) {
+    const [searchCity, setSearchCity] = useState(null); // Corrected variable name
+
+    const handleChange = (event) => { // Corrected parameter name
+        setSearchCity(event.target.value); // Corrected variable name
+    }
+
+    const handleClick = () => { // Removed unnecessary parameter
+        search(searchCity); // Corrected variable name
+    }
+
     return (
         <div className="icon-container">
-            <div className="margin  "> </div>
+            <div className="margin"> </div>
             <div className="icon flex h-1/3 justify-center items-center ">
                 <img src={sunny} alt="Sunny Icon" className="icon size-28 opacity-100 m-4" />
             </div>
@@ -16,16 +26,20 @@ function RightBar({data}) {
             </div>
             <div className="main flex justify-center">
                 <div className="flex justify-center border-gray-600 border-b-2 w-2/3">
-                    <input type="text" 
-                    className='bg-transparent rounded-full w-2/3 text-white placeholder-white font-mono text-center' 
-                    placeholder="Search Cities" /> 
+                    <input
+                        type="text"
+                        className='bg-transparent rounded-full w-2/3 text-white placeholder-white font-mono text-center'
+                        value={searchCity}
+                        onChange={handleChange}
+                        placeholder="Search Cities" />
                     <button>
                         <img src={seacrh}
-                        className='size-8'
-                        alt="" />
+                            className='size-8'
+                            onClick={handleClick}
+                            alt="" />
                     </button>
                 </div>
-                
+
             </div>
             <div className=" ">
                 <div className="flex justify-center mt-4 text-white  ">
@@ -33,12 +47,12 @@ function RightBar({data}) {
                         <h1 className='text-2xl font-serif'>{data.city}</h1>
                     </div>
                 </div>
-            <RightBottom label={"Temprature"} value={`${data.curtemp} C` } />
-            <RightBottom label={"Humidity"} value={`${data.humidity} %` } />
-            <RightBottom label={"Visibility"} value={`${data.visibility} mi` } />
-            <RightBottom label={"Wind Speed"} value={`${data.wind} km/h` } />
-            <RightBottom label={"Clouds"} value={`${data.cloud} %` } />
-                
+                <RightBottom label={"Temprature"} value={`${data.curtemp} C`} />
+                <RightBottom label={"Humidity"} value={`${data.humidity} %`} />
+                <RightBottom label={"Visibility"} value={`${data.visibility} mi`} />
+                <RightBottom label={"Wind Speed"} value={`${data.wind} km/h`} />
+                <RightBottom label={"Clouds"} value={`${data.cloud} %`} />
+
             </div>
         </div>
 

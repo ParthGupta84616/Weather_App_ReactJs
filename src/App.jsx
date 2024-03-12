@@ -12,7 +12,6 @@ function App() {
   const [city, setCity] = useState(null)
   const [sunset, setSunset] = useState(null)
   const [sunrise, setSunrise] = useState(null)
-  // const [sunset, setsunset] = useState(second)
   const [weather, setWeather] = useState(null)
   const [maxtemp, setMaxtemp] = useState(null)
   const [mintemp, setMintemp] = useState(null)
@@ -21,6 +20,7 @@ function App() {
   const [wind, setWind] = useState(null)
   const [visibility, setvisibility] = useState(null)
   const [cloud, setCloud] = useState(null)
+  const [place, setPlace] = useState(null)
   const data = {
       city,
       country,
@@ -35,9 +35,42 @@ function App() {
       wind,
       visibility
     };
-  
+    const input = (data)=>{
+      setPlace(data)
 
+    }
 
+    const inputPosition = (location) => {
+      const APIkey = "45af0dcd4891e988e07e6aef3e525b8e";
+      const geoApiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${location}&appid=${APIkey}`;
+    
+      fetch(geoApiUrl)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          const lon = data[0].lon;
+          const lat = data[0].lat;
+    
+          const weatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}`;
+          console.log(weatherApiUrl);
+    
+          return fetch(weatherApiUrl);
+        })
+        .then(response => response.json())
+        .then(weatherData => {
+          console.log(weatherData);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    };
+    
+    useEffect(() => {
+      if (place) {
+        inputPosition(place);
+      }
+    }, [place]);
+    
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -94,8 +127,9 @@ function App() {
         .catch(error => {
           console.error('Error fetching weather data:', error);
         });
+        
+
     }
-  
     function showError(error) {
       switch (error.code) {
         case error.PERMISSION_DENIED:
@@ -115,8 +149,10 @@ function App() {
           break;
       }
     }
+    
   }, []);
   console.log(data);
+
   
   return (
     <div className='flex items-center justify-center' style={{ background : bg , height:"100vh" , width:"100vw" , }}>
@@ -124,7 +160,7 @@ function App() {
         <LeftBar data={data}/>
       </div>
       <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl bg-opacity-75">
-        <RightBar data={data} />
+        <RightBar data={data} search={input}/>
       </div>
     </div>
   );
