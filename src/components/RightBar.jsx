@@ -45,7 +45,6 @@ function RightBar({ data, search }) {
                         <img src={seacrh}
                             className='size-8'
                             onClick={handleClick}
-                            // onKeyDown={handlekey}
                             alt="" />
                     </button>
                 </div>

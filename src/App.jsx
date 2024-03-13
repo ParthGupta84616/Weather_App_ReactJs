@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import bg1 from "./images/1298139.jpg";
 import RightBar from './components/RightBar';
 import LeftBar from './components/LeftBar';
-import sunny from "./images/sunny.png";
-import snow from "./images/Snow.jpg";
+
 
 function App() {
   const bg = `url(${bg1})`;
