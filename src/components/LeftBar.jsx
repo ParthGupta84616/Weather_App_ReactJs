@@ -52,14 +52,29 @@ function LeftBar({ data }) {
                 return Clear; 
         }
     }    
-
     const [bg, setBg] = useState(`url("/static/media/Clear Sky.bba5f87aa1901ad9ac49.jpg")`);
+    const [utcDate, setUTCDate] = useState('');
+    const [utcTime, setUTCTime] = useState('');
+
+    useEffect(() => {
+    const interval = setInterval(() => {
+        const timezoneOffsetSeconds = data.timezone;
+        const timezoneOffsetMilliseconds = timezoneOffsetSeconds * 1000; 
+
+        const currentDate = new Date();
+        const newDate = new Date(currentDate.getTime() + timezoneOffsetMilliseconds);
+
+        setUTCDate(newDate.toUTCString().slice(0, 16)); 
+        setUTCTime(newDate.toUTCString().slice(17, 25)); 
+    }, 1000);
+
+    return () => clearInterval(interval);
+    }, [data.timezone]);
 
     useEffect(() => {
         const backgroundImage = getBackgroundImage(data.weather);
         setBg(`url("${backgroundImage}")`);
     }, [data.weather]);
-    console.log(bg);
 
     return (
         <div className='w-full h-full rounded-xl text-slate-200' style={{ background : bg }}>
@@ -70,7 +85,6 @@ function LeftBar({ data }) {
             </div>
             <div className="upperbox mt- h-1/6">
                 <div className="city flex justify-start  text-3xl p-4 -mb-2 font-serif"><strong>Max {data.maxtemp} &deg;C </strong></div>
-                <div className="country flex justify-start  ml-4 text-3xl  font-serif"><strong>Min {data.mintemp} &deg;C </strong></div>
             </div>
             <div className="upperbox h-1/6">
                 <div className="city flex justify-end  text-3xl font-serif p-4"><strong> {data.sunrise}</strong></div>
@@ -80,10 +94,10 @@ function LeftBar({ data }) {
             <div className="lower w-full flex border-white p-4  mt-8 ">
                 <div className="left justify-start w-2/3">
                     <div className="time text-6xl p-2 font-serif">
-                        <p>18:16:32</p>
+                        <p>{utcTime}</p>
                     </div>
                     <div className="date  text-3xl ml-4 mt-2 font-medium">
-                        <p>Sunday, 10 March 2024 </p>
+                        <p>{utcDate} </p>
                     </div>
                 </div>
                 <div className="temp">

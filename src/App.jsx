@@ -20,6 +20,7 @@ function App() {
   const [visibility, setVisibility] = useState(null);
   const [cloud, setCloud] = useState(null);
   const [place, setPlace] = useState(null);
+  const [timezone, setTimezone] = useState(null)
 
   const data = {
     city,
@@ -33,7 +34,9 @@ function App() {
     cloud,
     weather,
     wind,
-    visibility
+    visibility,
+    timezone
+    
   };
 
   const input = (data) => {
@@ -102,6 +105,7 @@ function App() {
         setVisibility(data.visibility);
         setCloud(data.clouds.all);
         setWind(data.wind.speed);
+        setTimezone(data.timezone)
       })
       .catch(error => {
         console.error('Error fetching weather data:', error);
