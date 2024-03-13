@@ -4,14 +4,21 @@ import seacrh from "../images/search.png"
 import RightBottom from './RightBottom';
 
 function RightBar({ data, search }) {
-    const [searchCity, setSearchCity] = useState(null); // Corrected variable name
+    const [searchCity, setSearchCity] = useState(null); 
 
-    const handleChange = (event) => { // Corrected parameter name
-        setSearchCity(event.target.value); // Corrected variable name
+    const handleChange = (event) => { 
+        setSearchCity(event.target.value);
     }
 
-    const handleClick = () => { // Removed unnecessary parameter
-        search(searchCity); // Corrected variable name
+    const handleClick = () => {
+        search(searchCity); 
+        setSearchCity("")
+    }
+    const handlekey = (event)=>{
+        if(event.key==="Enter"){
+            handleClick();
+
+        }
     }
 
     return (
@@ -31,11 +38,14 @@ function RightBar({ data, search }) {
                         className='bg-transparent rounded-full w-2/3 text-white placeholder-white font-mono text-center'
                         value={searchCity}
                         onChange={handleChange}
+                        onKeyDown={handlekey}
                         placeholder="Search Cities" />
+                        
                     <button>
                         <img src={seacrh}
                             className='size-8'
                             onClick={handleClick}
+                            // onKeyDown={handlekey}
                             alt="" />
                     </button>
                 </div>
