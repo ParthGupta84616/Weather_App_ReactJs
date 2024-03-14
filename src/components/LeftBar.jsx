@@ -75,7 +75,7 @@ function LeftBar({ data }) {
         const backgroundImage = getBackgroundImage(data.weather);
         setBg(`url("${backgroundImage}")`);
     }, [data.weather]);
-
+    console.log(bg);
     return (
         <div className='w-full h-full rounded-xl text-slate-200' style={{ background : bg }}>
 

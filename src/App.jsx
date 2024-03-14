@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import bg1 from "./images/1298139.jpg";
 import RightBar from './components/RightBar';
 import LeftBar from './components/LeftBar';
-
+import loading from "./images/Loading.jpg"
 
 function App() {
   const bg = `url(${bg1})`;
+  const [loadingbg, setloadingbg] = useState(loading)
   const [userData, setUserData] = useState(null);
   const [country, setCountry] = useState(null);
   const [city, setCity] = useState(null);
@@ -21,7 +22,13 @@ function App() {
   const [cloud, setCloud] = useState(null);
   const [place, setPlace] = useState(null);
   const [timezone, setTimezone] = useState(null)
-
+  const [Timer, setTimer] = useState(true)
+  const [Counter, setCounter] = useState(null)
+  
+  var count=(count)=>{
+    setCounter(count)
+    setTimer(true)
+  }
   const data = {
     city,
     country,
@@ -154,17 +161,50 @@ function App() {
     
   }, []);
   console.log(data);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTimer(false);
+      setloadingbg(loading)
+    }, 2000);
 
-  
+    return () => clearTimeout(timer);
+  }, [Counter]);
+  console.log(loadingbg);
   return (
-    <div className='flex items-center justify-center' style={{ background : bg , height:"100vh" , width:"100vw" , }}>
+    <>
+
+      <div className='flex items-center justify-center' style={{ background : bg , height:"100vh" , width:"100vw" }}>
       <div className="box w-5/12 h-3/4 border-gray-600 border-2 rounded-xl">
-        <LeftBar data={data}/>
+        {Timer?(
+        <div className="flex h-full w-full">
+        <div className="w-full h-full" style={{ background: loadingbg}}>
+          <img src={loadingbg} alt="Image1" style={{ width: "100%", height: "100%" }} className='rounded-xl' />
+        </div>
       </div>
-      <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl bg-opacity-75">
-        <RightBar data={data} search={input}/>
+      
+        
+          
+        ):(
+          <LeftBar data={data}/>
+          )
+        }
+        
       </div>
+      
+        {!Timer? (
+          ( 
+            <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl bg-opacity-75">
+            <RightBar data={data} search={input} count = {count} />
+            </div>
+          )
+        ):(null)
+        
+        }
+      
     </div>
+    
+
+    </>
   );
 }
 

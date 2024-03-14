@@ -13,9 +13,10 @@ import  Snow from "../Icons/Snow.png"
 import  Thunderstrome from "../Icons/Thunderstrome.png"
 
 
-function RightBar({ data, search }) {
+function RightBar({ data, search , count }) {
     const [searchCity, setSearchCity] = useState(null); 
     const [Weather, setWeather] = useState(sunny)
+    const [Count, setCount] = useState(0)
 
     useEffect(() => {
         switch (data.weather) {
@@ -63,6 +64,8 @@ function RightBar({ data, search }) {
     const handleClick = () => {
         search(searchCity); 
         setSearchCity("")
+        setCount(Count+1)
+        count(Count)
     }
     const handlekey = (event)=>{
         if(event.key==="Enter"){
