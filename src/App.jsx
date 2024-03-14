@@ -7,7 +7,6 @@ import loading from "./images/Loading.jpg"
 function App() {
   const bg = `url(${bg1})`;
   const [loadingbg, setloadingbg] = useState(loading)
-  const [userData, setUserData] = useState(null);
   const [country, setCountry] = useState(null);
   const [city, setCity] = useState(null);
   const [sunset, setSunset] = useState(null);
@@ -99,7 +98,6 @@ function App() {
         const sunriseIST = sunriseDate.toLocaleString("en-IN", options);
         const sunsetIST = sunsetDate.toLocaleString("en-IN", options);
         setSunrise(sunriseIST);
-        setUserData(data);
         setSunset(sunsetIST);
 
         setCountry(data.sys.country);
@@ -123,7 +121,7 @@ function App() {
     if (place) {
       inputPosition(place);
     }
-  }, [place]);
+  }, );
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -172,7 +170,6 @@ function App() {
   console.log(loadingbg);
   return (
     <>
-
       <div className='flex items-center justify-center' style={{ background : bg , height:"100vh" , width:"100vw" }}>
       <div className="box w-5/12 h-3/4 border-gray-600 border-2 rounded-xl">
         {Timer?(
@@ -181,16 +178,11 @@ function App() {
           <img src={loadingbg} alt="Image1" style={{ width: "100%", height: "100%" }} className='rounded-xl' />
         </div>
       </div>
-      
-        
-          
         ):(
           <LeftBar data={data}/>
           )
         }
-        
       </div>
-      
         {!Timer? (
           ( 
             <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl bg-opacity-75">
@@ -198,12 +190,8 @@ function App() {
             </div>
           )
         ):(null)
-        
         }
-      
     </div>
-    
-
     </>
   );
 }
