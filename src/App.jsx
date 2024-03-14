@@ -7,8 +7,7 @@ import { showError } from './components/Functions';
 
 function App() {
   const bg = `url(${bg1})`;
-  const [loadingbg, setloadingbg] = useState(loading)
-  const [userData, setUserData] = useState(null);
+  const loadingbg = loading;
   const [country, setCountry] = useState(null);
   const [city, setCity] = useState(null);
   const [sunset, setSunset] = useState(null);
@@ -90,8 +89,6 @@ function App() {
     fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
-
         const sunriseUnixTimestamp = data.sys.sunrise + data.timezone;
         const sunsetUnixTimestamp = data.sys.sunset + data.timezone;
         const sunriseMilliseconds = sunriseUnixTimestamp * 1000;
@@ -107,7 +104,6 @@ function App() {
         const sunriseIST = sunriseDate.toLocaleString("en-IN", options);
         const sunsetIST = sunsetDate.toLocaleString("en-IN", options);
         setSunrise(sunriseIST);
-        setUserData(data);
         setSunset(sunsetIST);
 
         setCountry(data.sys.country);
@@ -131,7 +127,7 @@ function App() {
     if (place) {
       inputPosition(place);
     }
-  }, [place]);
+  }, );
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -139,21 +135,16 @@ function App() {
     } else {
       console.log("Geolocation is not supported by this browser.");
     }
-
     function showPosition(position) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
       weatherdetails(latitude, longitude);
     }
-
-    
-    
   }, []);
   console.log(data);
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimer(false);
-      setloadingbg(loadingbg)
     }, 3000);
 
     return () => clearTimeout(timer);
@@ -161,7 +152,6 @@ function App() {
   console.log(Counter);
   return (
     <>
-
     <div className='flex items-center justify-center' style={{ background : bg , height:"100vh" , width:"100vw" }}>
     <div className="box w-5/12 h-3/4 border-gray-600 border-2 rounded-xl">
      
@@ -171,16 +161,11 @@ function App() {
         <img src={loadingbg} alt="Image1" style={{ width: "100%", height: "100%" }} className='rounded-xl' />
       </div>
     </div>
-    
-      
-        
       ):(
         <LeftBar data={data}/>
         )
-      }
-      
-    </div>
-    
+      }     
+    </div> 
       {!Timer? (
         ( 
           <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl bg-opacity-75">
@@ -188,12 +173,8 @@ function App() {
           </div>
         )
       ):(null)
-      
       }
-    
   </div>
-  
-
   </>
   );
 }
