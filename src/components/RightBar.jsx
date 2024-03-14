@@ -2,9 +2,20 @@ import React, { useState } from 'react';
 import sunny from "../images/sunny.png"; 
 import seacrh from "../images/search.png"
 import RightBottom from './RightBottom';
+import  Clouds from "../Icons/Clouds.png"
+import  Drizzle from "../Icons/Drizzle.png"
+import  Dust from "../Icons/Dust.png"
+import  Fog from "../Icons/Fog.png"
+import  Haze from "../Icons/Haze.png"
+import  Rain from "../Icons/Rain.png"
+import  Smoke from "../Icons/Smoke.png"
+import  Snow from "../Icons/Snow.png"
+import  Thunderstrome from "../Icons/Thunderstrome.png"
+
 
 function RightBar({ data, search }) {
     const [searchCity, setSearchCity] = useState(null); 
+    
 
     const handleChange = (event) => { 
         setSearchCity(event.target.value);
