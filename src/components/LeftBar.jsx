@@ -1,57 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Rain from "../images/img1.jpg";
-import Clear from "../images/Clear Sky.jpg";
-import Clouds from "../images/Few Clouds.jpg";
-import Drizzle from "../images/Drizzle.jpg";
-import Thunderstorm from "../images/Thunderstorm.jpg";
-import Snow from "../images/Snow.jpg";
-import Mist from "../images/Mist.jpg";
-import Smoke from "../images/Smoke.jpg";
-import Haze from "../images/Haze.jpg";
-import Dust from "../images/Dust.jpg";
-import Fog from "../images/Fog.jpg";
-import Sand from "../images/Sand.jpg";
-import Ash from "../images/Ash.jpg";
-import Squall from "../images/squall.jpg";
-import Tornado from "../images/Tornado.jpg";
+
+import getBackgroundImage from './Functions';
 
 function LeftBar({ data }) {
-    function getBackgroundImage(weather) {
-        switch (weather) {
-            case 'Rain':
-                return Rain;
-            case 'Clear':
-                return Clear;
-            case 'Clouds':
-                return Clouds;
-            case 'Drizzle':
-                return Drizzle;
-            case 'Thunderstorm':
-                return Thunderstorm;
-            case 'Snow':
-                return Snow;
-            case 'Mist':
-                return Mist;
-            case 'Smoke':
-                return Smoke;
-            case 'Haze':
-                return Haze;
-            case 'Dust':
-                return Dust;
-            case 'Fog':
-                return Fog;
-            case 'Sand':
-                return Sand;
-            case 'Ash':
-                return Ash;
-            case 'Squall':
-                return Squall;
-            case 'Tornado':
-                return Tornado;
-            default:
-                return Clear; 
-        }
-    }    
+      
     const [bg, setBg] = useState(`url("/static/media/Clear Sky.bba5f87aa1901ad9ac49.jpg")`);
     const [utcDate, setUTCDate] = useState('');
     const [utcTime, setUTCTime] = useState('');
@@ -75,7 +27,6 @@ function LeftBar({ data }) {
         const backgroundImage = getBackgroundImage(data.weather);
         setBg(`url("${backgroundImage}")`);
     }, [data.weather]);
-    console.log(bg);
     return (
         <div className='w-full h-full rounded-xl text-slate-200' style={{ background : bg }}>
 

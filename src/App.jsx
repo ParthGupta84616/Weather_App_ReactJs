@@ -3,10 +3,12 @@ import bg1 from "./images/1298139.jpg";
 import RightBar from './components/RightBar';
 import LeftBar from './components/LeftBar';
 import loading from "./images/Loading.jpg"
+import { showError } from './components/Functions';
 
 function App() {
   const bg = `url(${bg1})`;
   const [loadingbg, setloadingbg] = useState(loading)
+  const [userData, setUserData] = useState(null);
   const [country, setCountry] = useState(null);
   const [city, setCity] = useState(null);
   const [sunset, setSunset] = useState(null);
@@ -22,12 +24,19 @@ function App() {
   const [place, setPlace] = useState(null);
   const [timezone, setTimezone] = useState(null)
   const [Timer, setTimer] = useState(true)
-  const [Counter, setCounter] = useState(null)
+  const [Counter, setCounter] = useState(null);
+  const [Count, setCount] = useState(null);
   
-  var count=(count)=>{
-    setCounter(count)
-    setTimer(true)
+  const count = (countValue) => {
+    setCount(countValue);
   }
+  
+  useEffect(() => {
+    setTimer(true);
+    setCounter(Count); 
+  }, [Count]);
+  
+  
   const data = {
     city,
     country,
@@ -98,6 +107,7 @@ function App() {
         const sunriseIST = sunriseDate.toLocaleString("en-IN", options);
         const sunsetIST = sunsetDate.toLocaleString("en-IN", options);
         setSunrise(sunriseIST);
+        setUserData(data);
         setSunset(sunsetIST);
 
         setCountry(data.sys.country);
@@ -121,7 +131,7 @@ function App() {
     if (place) {
       inputPosition(place);
     }
-  }, );
+  }, [place]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -136,63 +146,55 @@ function App() {
       weatherdetails(latitude, longitude);
     }
 
-    function showError(error) {
-      switch (error.code) {
-        case error.PERMISSION_DENIED:
-          console.log("User denied the request for Geolocation.");
-          break;
-        case error.POSITION_UNAVAILABLE:
-          console.log("Location information is unavailable.");
-          break;
-        case error.TIMEOUT:
-          console.log("The request to get user location timed out.");
-          break;
-        case error.UNKNOWN_ERROR:
-         
-          console.log("An unknown error occurred.");
-          break;
-        default:
-          console.log("An error occurred:", error.message);
-          break;
-      }
-    }
+    
     
   }, []);
   console.log(data);
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimer(false);
-      setloadingbg(loading)
-    }, 2000);
+      setloadingbg(loadingbg)
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [Counter]);
-  console.log(loadingbg);
+  console.log(Counter);
   return (
     <>
-      <div className='flex items-center justify-center' style={{ background : bg , height:"100vh" , width:"100vw" }}>
-      <div className="box w-5/12 h-3/4 border-gray-600 border-2 rounded-xl">
-        {Timer?(
-        <div className="flex h-full w-full">
-        <div className="w-full h-full" style={{ background: loadingbg}}>
-          <img src={loadingbg} alt="Image1" style={{ width: "100%", height: "100%" }} className='rounded-xl' />
-        </div>
+
+    <div className='flex items-center justify-center' style={{ background : bg , height:"100vh" , width:"100vw" }}>
+    <div className="box w-5/12 h-3/4 border-gray-600 border-2 rounded-xl">
+     
+      {Timer?(
+      <div className="flex h-full w-full">
+      <div className="w-full h-full" style={{ background: loadingbg}}>
+        <img src={loadingbg} alt="Image1" style={{ width: "100%", height: "100%" }} className='rounded-xl' />
       </div>
-        ):(
-          <LeftBar data={data}/>
-          )
-        }
-      </div>
-        {!Timer? (
-          ( 
-            <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl bg-opacity-75">
-            <RightBar data={data} search={input} count = {count} />
-            </div>
-          )
-        ):(null)
-        }
     </div>
-    </>
+    
+      
+        
+      ):(
+        <LeftBar data={data}/>
+        )
+      }
+      
+    </div>
+    
+      {!Timer? (
+        ( 
+          <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl bg-opacity-75">
+          <RightBar data={data} search={input} count = {count} />
+          </div>
+        )
+      ):(null)
+      
+      }
+    
+  </div>
+  
+
+  </>
   );
 }
 

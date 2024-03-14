@@ -73,7 +73,7 @@ function RightBar({ data, search , count }) {
 
         }
     }
-    console.log(Weather);
+    // console.log(Weather);
 
     return (
         <div className="icon-container">
