@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import sunny from "../images/sunny.png"; 
 import seacrh from "../images/search.png"
 import RightBottom from './RightBottom';
@@ -15,6 +15,45 @@ import  Thunderstrome from "../Icons/Thunderstrome.png"
 
 function RightBar({ data, search }) {
     const [searchCity, setSearchCity] = useState(null); 
+    const [Weather, setWeather] = useState(sunny)
+
+    useEffect(() => {
+        switch (data.weather) {
+            case "Rain":
+                setWeather(Rain);
+                break;
+            case "Clear":
+                setWeather(sunny);
+                break;
+            case "Clouds":
+                    setWeather(Clouds);
+                    break;
+            case "Drizzle":
+                setWeather(Drizzle);
+                break;
+            case "Dust":
+                setWeather(Dust);
+                break;      
+            case "Fog":
+                setWeather(Fog);
+                break;
+            case "Haze":
+                setWeather(Haze);
+                break;
+            case "Snow":
+                setWeather(Snow);
+                break;
+            case "Smoke":
+                setWeather(Smoke);
+                break;
+            case "Thunderstrome":
+                setWeather(Thunderstrome);
+                break;
+            default:
+                setWeather(sunny);
+                break;
+        }
+    }, [data.weather]);
     
 
     const handleChange = (event) => { 
@@ -31,12 +70,13 @@ function RightBar({ data, search }) {
 
         }
     }
+    console.log(Weather);
 
     return (
         <div className="icon-container">
             <div className="margin"> </div>
             <div className="icon flex h-1/3 justify-center items-center ">
-                <img src={sunny} alt="Sunny Icon" className="icon size-28 opacity-100 m-4" />
+                <img src={Weather} alt="Sunny Icon" className="icon size-28 opacity-100 m-4" />
             </div>
             <div className="dis flex justify-center text-white text-3xl font-mono "> <strong>{data.weather} </strong> </div>
             <div className="p-8 -mt-4 rounded-full ">
