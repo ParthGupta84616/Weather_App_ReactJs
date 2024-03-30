@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import bg1 from "./images/1298139.jpg";
 import RightBar from './components/RightBar';
 import LeftBar from './components/LeftBar';
@@ -67,22 +67,24 @@ function App() {
         console.log(data);
         const lon = data[0].lon;
         const lat = data[0].lat;
-
+        
+        // .then(
+        //   weatherdata=>{
+        //     console.log(weatherdata);
+        //   }
+        // )
+        console.log("Here");
         weatherdetails(lat, lon);
-
         return fetch(null);
       })
-      .then(response => response.json())
-      .then(weatherData => {
-        console.log(weatherData);
-        
-      })
+      
       .catch(error => {
         console.error('Error fetching data:', error);
       });
   };
 
-  const weatherdetails = (lat, lon) => {
+  const weatherdetails = useCallback((lat, lon) => {
+    WeatherReport(lat,lon)
     const YOUR_API_KEY = "45af0dcd4891e988e07e6aef3e525b8e";
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?appid=${YOUR_API_KEY}&lat=${lat}&lon=${lon}`;
 
@@ -121,8 +123,26 @@ function App() {
       .catch(error => {
         console.error('Error fetching weather data:', error);
       });
-  };
+  }, []);
+const WeatherReport = (lat, lon) => {
+    const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,precipitation,cloud_cover,visibility,uv_index,uv_index_clear_sky,is_day&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,daylight_duration,sunshine_duration,uv_index_max,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant&past_days=14&past_hours=24&past_minutely_15=24&forecast_days=16&forecast_hours=24&forecast_minutely_15=96`;
 
+    return fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            return data; 
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            throw error; 
+        });
+};
   useEffect(() => {
     if (place) {
       inputPosition(place);
@@ -131,16 +151,19 @@ function App() {
 
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, showError);
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else {
-      console.log("Geolocation is not supported by this browser.");
+        console.log("Geolocation is not supported by this browser.");
     }
+
     function showPosition(position) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
       weatherdetails(latitude, longitude);
+
     }
-  }, []);
+  }, [weatherdetails]);
+
   console.log(data);
   useEffect(() => {
     const timer = setTimeout(() => {

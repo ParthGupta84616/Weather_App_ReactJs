@@ -52,8 +52,8 @@ function LeftBar({ data }) {
                     </div>
                 </div>
                 <div className="temp">
-                    <div className="flex justify-end mt-2">
-                        <div class="value text-8xl font-thin"><strong>{data.curtemp}</strong></div>
+                    <div className="flex justify-end mt-2 text-slate-600 ">
+                        <div class="value text-8xl "><strong>{data.curtemp}</strong></div>
                         <div class="unit text-6xl mt-6 font-extralight"><strong>&deg;C</strong></div>
                     </div>
                 </div>
