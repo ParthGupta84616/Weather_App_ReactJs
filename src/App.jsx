@@ -26,6 +26,7 @@ function App() {
   const [Timer, setTimer] = useState(true)
   const [Counter, setCounter] = useState(null);
   const [Count, setCount] = useState(null);
+  const [window, setWindow] = useState("Home")
   
   const count = (countValue) => {
     setCount(countValue);
@@ -169,52 +170,53 @@ const WeatherReport = (lat, lon) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimer(false);
-    }, 3000);
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [Counter]);
   // console.log(Counter);
 
   const handleForecast = (title) => {
-    console.log(`Fetching forecast for ${title}`);
+    setWindow(title)
 };
+console.log(window);
 
 
-  return (
-    <>
-    <div className='flex items-center justify-center' style={{ background : bg , height:"100vh" , width:"100vw" }}>
-    {!Timer? (
-          <div className="box w-40 h-3/4 border-gray-600 border-2 bg-slate-500 rounded-2xl ">
-            <NavBar handleForecast={handleForecast}/>
-           
-          </div>
-      ):(null)
-      }
-    <div className="box w-5/12 h-3/4 border-gray-600 border-2 rounded-xl">
-     
-      {Timer?(
-      <div className="flex h-full w-full">
-      <div className="w-full h-full" style={{ background: loadingbg}}>
-        <img src={loadingbg} alt="Image1" style={{ width: "100%", height: "100%" }} className='rounded-xl' />
+return (
+  <>
+  <div className='flex items-center justify-center' style={{ background: bg, height: "100vh", width: "100vw" }}>
+    {!Timer && (
+      <div className="box w-40 h-3/4 border-gray-600 border-2 bg-slate-500 rounded-2xl">
+        <NavBar handleForecast={handleForecast}/>
       </div>
-    </div>
-      ):(
-          
-        <LeftBar data={data}/>
-        
-        )
-      }     
-    </div> 
-      {!Timer? (
-          <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl bg-opacity-75">
-          <RightBar data={data} search={input} count = {count} />
-          </div>
-      ):(null)
-      }
-      
-  </div>
-  </>
-  );
-}
+    )}
 
+                                              {window === "Home" && (
+                                                <div className="box w-5/12 h-3/4 border-gray-600 border-2 rounded-xl">
+                                                  {Timer ? (
+                                                    <div className="flex h-full w-full">
+                                                      <div className="w-full h-full" style={{ background: loadingbg }}>
+                                                        <img src={loadingbg} alt="Image1" style={{ width: "100%", height: "100%" }} className='rounded-xl' />
+                                                      </div>
+                                                  </div>
+                                                ) : (
+                                                  <LeftBar data={data} />
+                                                )}
+                                              </div> 
+                                              )}
+                                              {window === "Home" && !Timer && (
+                                                <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl bg-opacity-75">
+                                                  <RightBar data={data} search={input} count={count} />
+                                                  </div>
+                                              )}
+    {window!=="Home"&&(
+      <div className="flex justify-center items-center w-8/12 h-3/4 border-slate-700 rounded-xl border-2">
+        <h1>Hola Mola Baam Ka Gola</h1>
+      </div>
+    )}
+  </div>
+</>
+
+);
+      }
 export default App;
