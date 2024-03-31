@@ -4,6 +4,7 @@ import RightBar from './components/RightBar';
 import LeftBar from './components/LeftBar';
 import loading from "./images/Loading.jpg"
 import { showError } from './components/Functions';
+import NavBar from './components/NavBar';
 
 function App() {
   const bg = `url(${bg1})`;
@@ -176,6 +177,13 @@ const WeatherReport = (lat, lon) => {
   return (
     <>
     <div className='flex items-center justify-center' style={{ background : bg , height:"100vh" , width:"100vw" }}>
+    {!Timer? (
+          <div className="box w-40 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl ">
+            <NavBar />
+           
+          </div>
+      ):(null)
+      }
     <div className="box w-5/12 h-3/4 border-gray-600 border-2 rounded-xl">
      
       {Timer?(
@@ -185,18 +193,19 @@ const WeatherReport = (lat, lon) => {
       </div>
     </div>
       ):(
+          
         <LeftBar data={data}/>
+        
         )
       }     
     </div> 
       {!Timer? (
-        ( 
           <div className="box w-1/4 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl bg-opacity-75">
           <RightBar data={data} search={input} count = {count} />
           </div>
-        )
       ):(null)
       }
+      
   </div>
   </>
   );
