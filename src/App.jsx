@@ -165,7 +165,7 @@ const WeatherReport = (lat, lon) => {
     }
   }, [weatherdetails]);
 
-  console.log(data);
+  // console.log(data);
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimer(false);
@@ -173,13 +173,19 @@ const WeatherReport = (lat, lon) => {
 
     return () => clearTimeout(timer);
   }, [Counter]);
-  console.log(Counter);
+  // console.log(Counter);
+
+  const handleForecast = (title) => {
+    console.log(`Fetching forecast for ${title}`);
+};
+
+
   return (
     <>
     <div className='flex items-center justify-center' style={{ background : bg , height:"100vh" , width:"100vw" }}>
     {!Timer? (
-          <div className="box w-40 h-3/4 border-gray-600 border-2 bg-gray-800 rounded-xl ">
-            <NavBar />
+          <div className="box w-40 h-3/4 border-gray-600 border-2 bg-slate-500 rounded-2xl ">
+            <NavBar handleForecast={handleForecast}/>
            
           </div>
       ):(null)
