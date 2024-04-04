@@ -207,7 +207,7 @@ return (
                                                   </div>
                                               )}
     {window!=="Home"&&(
-      <div className="flex justify-center items-center w-8/12 h-3/4 border-slate-700 rounded-xl border-2">
+      <div className="flex w-8/12 h-3/4 border-slate-700 rounded-xl border-2">
         <Window window={window} WeatherReports={weatherReports} data={data}/>
       </div>
     )}
