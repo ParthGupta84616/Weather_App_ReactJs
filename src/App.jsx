@@ -68,10 +68,8 @@ function App() {
     fetch(geoApiUrl)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         const lon = data[0].lon;
         const lat = data[0].lat;
-        console.log("Here");
         weatherdetails(lat, lon);
         return fetch(null);
       })
@@ -88,7 +86,7 @@ function App() {
 
     fetch(apiUrl)
       .then(response => response.json())
-      .then(data => {
+      .then(data => { 
         const sunriseUnixTimestamp = data.sys.sunrise + data.timezone;
         const sunsetUnixTimestamp = data.sys.sunset + data.timezone;
         const sunriseMilliseconds = sunriseUnixTimestamp * 1000;
@@ -146,7 +144,7 @@ const WeatherReport = (lat, lon) => {
     if (place) {
       inputPosition(place);
     }
-  }, );
+  },[place] );
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -176,7 +174,7 @@ const WeatherReport = (lat, lon) => {
   const handleForecast = (title) => {
     setWindow(title)
 };
-console.log(window);
+// console.log(window);
 
 
 return (

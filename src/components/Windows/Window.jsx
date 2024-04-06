@@ -70,7 +70,7 @@ function Window({ window, WeatherReports, data }) {
           snowfall_sum = daily[6]
     }
     else {
-      daily = [TotalReport.hourly.time, TotalReport.hourly.temperature_2m, TotalReport.hourly.relative_humidity_2m];
+      daily = [TotalReport.hourly.time, TotalReport.hourly.precipitation, TotalReport.hourly.precipitation_probability];
       datesWithoutPrefix = daily[0].map(date => date.substring(5));
       temperatureMax = daily[1];
       temperatureMin = daily[2];
@@ -101,7 +101,7 @@ function Window({ window, WeatherReports, data }) {
         intersect: false,
       },
       animation: {
-          duration: 1000,
+          duration: 10,
           easing: 'easeInOutQuart',
       },
       scales: {
@@ -340,44 +340,46 @@ function Window({ window, WeatherReports, data }) {
 
       }
       else {
-        let MaxValue = Math.max(...temperatureMax)
-        let MinValue = Math.min(...temperatureMin)
-        
-        
         chartData.labels = newHour
         chartData1.labels = newHour
+
         chartOptions.plugins.tooltip.callbacks.label = function(context) {
           let label = context.dataset.label || '';
           if (label) {
             label += ': ';
           }
           if (context.parsed.y !== null) {
-            if (label.includes("Humidity")) {
+            if (label.includes("Probability")) {
               label += context.parsed.y + '%';
+            }
+            else if (label.includes("Hours")) {
+              label += context.parsed.y + 'h';
+            }
+            else if (label.includes("Precipitation")) {
+              label += context.parsed.y + 'mm';
             } else {
               label += context.parsed.y + '°C';
             }
           }
           return label;
         };
-        chartData.datasets[0].label = "Maximum Temperature"
-        chartData1.datasets[0].label = "Maximum Humidity "
+        chartData.datasets[0].label = "Precipitation";
+        chartData1.datasets[0].label = "Precipitation Probability "
         chartData.datasets[0].data = temperatureMax
         chartData1.datasets[0].data = temperatureMin
-        MaxValue = Math.max(...temperatureMax)
-        MinValue = Math.min(...temperatureMax)
-        MaxValueHumi = Math.max(...temperatureMin)
-        MinValueHumi = Math.min(...temperatureMin)
+        const MaxValue = Math.max(...temperatureMax)
+        const MinValue = Math.max(...temperatureMin)
+        const PrehouSum = temperatureMax.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
         
         Heading = "48 Hours Summary"
-        SubHeading_1="Max Temp"
-        Value_1=`${MaxValue} <span>&deg;C</span>`
-        SubHeading_3="Max Humidity"
-        Value_3=`${MaxValueHumi} %`
-        SubHeading_2="Min Temp"
-        Value_2=`${MinValue} <span>&deg;C</span>`
-        SubHeading_4="Min Humidity"
-        Value_4=`${MinValueHumi} %`
+        SubHeading_1="Precipi."
+        Value_1=`${MaxValue} mm`
+        SubHeading_2="Precipi. Prob."
+        Value_2=`${MinValue} %`
+        SubHeading_3="Total Precipi"
+        Value_3=`${PrehouSum} mm`
+        SubHeading_4="Total Precipi. Prob."
+        Value_4=`${temperatureMin.reduce((accumulator, currentValue) => accumulator + currentValue, 0)} %`
       }
   
     }
