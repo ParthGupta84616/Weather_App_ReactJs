@@ -69,3 +69,25 @@ export function showError(error) {
         break;
     }
   }
+export function modifyTime(dateTime) {
+    let date = dateTime.substring(5, 10);
+    let time = dateTime.substring(11);
+    let newTime = new Date(`2000-01-01T${time}`);
+    newTime.setHours(newTime.getHours() + 6);
+    let newTimeString = newTime.toTimeString().substring(0, 5);
+    return `${date}T${newTimeString}`;
+  }
+export function calculateTemperatureDifferences(temperatureMax, temperatureMin) {
+    return temperatureMax.map((maxTemp, index) => {
+        const minTemp = temperatureMin[index];
+        const difference = (maxTemp + minTemp) / 2;
+        return difference.toFixed(1);
+    });
+}
+export function calculateTemperatureVariation(temperatureMax, temperatureMin) {
+    return temperatureMax.map((maxTemp, index) => {
+        const minTemp = temperatureMin[index];
+        const variation = maxTemp - minTemp;
+        return variation.toFixed(1);
+    });
+}
