@@ -2,14 +2,9 @@ import React, { useState } from 'react';
 import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 import { calculateTemperatureDifferences, calculateTemperatureVariation, modifyTime } from '../Functions';
-// import { act } from '@testing-library/react';
-
-
 
 function Window({ window, WeatherReports, data }) {
   const [activeButton, setActiveButton] = useState('daily');
-  // const [Try, setTry] = useState("")
-
 
   const handleButtonClick = (buttonType) => {
     setActiveButton(buttonType);
@@ -30,6 +25,7 @@ function Window({ window, WeatherReports, data }) {
   let Value_4 = ""
   let MinValueHumi=""
   let MaxValueHumi = ""
+  let wind_driection = ""
   let rain_sum
   let showers_sum
   var newHour
@@ -37,6 +33,8 @@ function Window({ window, WeatherReports, data }) {
   let precipitation_sum
   let snowfall_sum
   let precipitation_hours
+  let wind_gusts
+  let wind_speed
   if (window === "Temperature"){
     if (activeButton === "daily") {
       daily = [TotalReport.daily.time, TotalReport.daily.temperature_2m_max, TotalReport.daily.temperature_2m_min];
@@ -77,6 +75,26 @@ function Window({ window, WeatherReports, data }) {
       newHour = TotalReport.hourly.time.map(modifyTime)
     }
   }
+  else if(window === "Wind"){
+    if (activeButton === "daily") {
+      daily = [TotalReport.daily.time,
+         TotalReport.daily.wind_direction_10m_dominant,
+          TotalReport.daily.wind_gusts_10m_max,
+          TotalReport.daily.wind_speed_10m_max];
+          datesWithoutPrefix = daily[0].map(date => date.substring(5));
+          wind_driection = daily[1]
+          wind_gusts= daily[2]
+          wind_speed= daily[3]
+    }
+    else {
+      daily = [TotalReport.hourly.time, TotalReport.hourly.precipitation, TotalReport.hourly.precipitation_probability];
+      datesWithoutPrefix = daily[0].map(date => date.substring(5));
+      temperatureMax = daily[1];
+      temperatureMin = daily[2];
+      newHour = TotalReport.hourly.time.map(modifyTime)
+    }
+  }
+
     console.log(Chart);
     console.log(TotalReport);
     
@@ -93,7 +111,7 @@ function Window({ window, WeatherReports, data }) {
       },
       elements: {
         line: {
-            tension: 0.5, // Adjust this value to make the lines smoother
+            tension: 0.5, 
         }
     },
       interaction: {
@@ -381,6 +399,109 @@ function Window({ window, WeatherReports, data }) {
         SubHeading_4="Total Precipi. Prob."
         Value_4=`${temperatureMin.reduce((accumulator, currentValue) => accumulator + currentValue, 0)} %`
       }
+  
+    }
+    if(window ==="Wind"){
+      if (activeButton === "daily"){
+        const sum = wind_driection.reduce((total, num) => total + num, 0);
+        const average = (sum / wind_driection.length).toFixed(2);
+        const sum_speed = wind_speed.reduce((total, num) => total + num, 0);
+        const average_speed = (sum_speed / wind_driection.length).toFixed(2);
+          chartData.labels = datesWithoutPrefix
+          chartData1.labels = datesWithoutPrefix
+          chartOptions.plugins.tooltip.callbacks.label = function(context) {
+            let label = context.dataset.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (context.parsed.y !== null) {
+              if (label.includes("Probability")) {
+                label += context.parsed.y + '%';
+              }
+              else if (label.includes("Hours")) {
+                label += context.parsed.y + 'h';
+              }
+              else if (label.includes("Precipitation")) {
+                label += context.parsed.y + 'mm';
+              }
+              else if (label.includes("Direction")) {
+                label += context.parsed.y + '°';
+              }  else if (label.includes("Wind")) {
+                  label += context.parsed.y + 'km/h';
+                } else {
+                label += context.parsed.y + '°';
+              }
+            }
+            return label;
+          };
+          chartData1.datasets.push(
+            {
+              label: 'Wind Gust',
+              data: wind_gusts, 
+              fill: false,
+              backgroundColor: 'rgba(255, 0, 0, 1)',
+              borderColor: 'rgba(255, 0, 0, 1)',
+              borderWidth: 1,
+            }
+          ) 
+      
+          chartData.datasets[0].label = "Wind Direction"
+          chartData.datasets[0].data = wind_driection
+          chartData1.datasets[0].label = "Wind Speed"
+          chartData1.datasets[0].data =wind_speed
+          Heading = "30 Days Summary"
+          SubHeading_1="Average Direction"
+          Value_1=`${average}°`
+          SubHeading_2="Highest Speed"
+          Value_2=`${Math.max(...wind_speed).toFixed(1)} Km/h`
+          SubHeading_3="Highest Gusts"
+          Value_3=`${Math.max(...wind_gusts).toFixed(1)} Km/h`
+          SubHeading_4="Average Speed"
+          Value_4=`${average_speed}Km/h`
+
+      }
+      // else {
+      //   chartData.labels = newHour
+      //   chartData1.labels = newHour
+
+      //   chartOptions.plugins.tooltip.callbacks.label = function(context) {
+      //     let label = context.dataset.label || '';
+      //     if (label) {
+      //       label += ': ';
+      //     }
+      //     if (context.parsed.y !== null) {
+      //       if (label.includes("Probability")) {
+      //         label += context.parsed.y + '%';
+      //       }
+      //       else if (label.includes("Hours")) {
+      //         label += context.parsed.y + 'h';
+      //       }
+      //       else if (label.includes("Precipitation")) {
+      //         label += context.parsed.y + 'mm';
+      //       } else {
+      //         label += context.parsed.y + '°C';
+      //       }
+      //     }
+      //     return label;
+      //   };
+      //   chartData.datasets[0].label = "Precipitation";
+      //   chartData1.datasets[0].label = "Precipitation Probability "
+      //   chartData.datasets[0].data = temperatureMax
+      //   chartData1.datasets[0].data = temperatureMin
+      //   const MaxValue = Math.max(...temperatureMax)
+      //   const MinValue = Math.max(...temperatureMin)
+      //   const PrehouSum = temperatureMax.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        
+      //   Heading = "48 Hours Summary"
+      //   SubHeading_1="Precipi."
+      //   Value_1=`${MaxValue} mm`
+      //   SubHeading_2="Precipi. Prob."
+      //   Value_2=`${MinValue} %`
+      //   SubHeading_3="Total Precipi"
+      //   Value_3=`${PrehouSum} mm`
+      //   SubHeading_4="Total Precipi. Prob."
+      //   Value_4=`${temperatureMin.reduce((accumulator, currentValue) => accumulator + currentValue, 0)} %`
+      // }
   
     }
 
