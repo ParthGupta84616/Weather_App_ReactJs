@@ -94,6 +94,23 @@ function Window({ window, WeatherReports, data }) {
       newHour = TotalReport.hourly.time.map(modifyTime)
     }
   }
+  else if(window === "UV"){
+    if (activeButton === "daily") {
+      daily = [TotalReport.daily.time,
+        TotalReport.daily.uv_index_max,
+         TotalReport.daily.sunshine_duration];
+          datesWithoutPrefix = daily[0].map(date => date.substring(5));
+          wind_driection = daily[1]
+          wind_gusts= daily[2]
+    }
+    else {
+      daily = [TotalReport.hourly.time, TotalReport.hourly.uv_index, TotalReport.hourly.uv_index_clear_sky];
+      datesWithoutPrefix = daily[0].map(date => date.substring(5));
+      temperatureMax = daily[1];
+      temperatureMin = daily[2];
+      newHour = TotalReport.hourly.time.map(modifyTime)
+    }
+  }
 
     console.log(Chart);
     console.log(TotalReport);
@@ -510,6 +527,105 @@ function Window({ window, WeatherReports, data }) {
         let average1 = (sum1 / temperatureMax.length).toFixed(1);
         SubHeading_4="Avg Speed"
         Value_4=`${average1} Km/h`
+       }
+    }
+    if(window ==="UV"){
+      if (activeButton === "daily"){
+        let dividedArray = wind_gusts.map(element => (element / 3600).toFixed(1));
+        const sum = wind_driection.reduce((total, num) => total + num, 0);
+        const average = (sum / wind_driection.length).toFixed(2);
+          chartData.labels = datesWithoutPrefix
+          chartData1.labels = datesWithoutPrefix
+          chartOptions.plugins.tooltip.callbacks.label = function(context) {
+            let label = context.dataset.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (context.parsed.y !== null) {
+              if (label.includes("Probability")) {
+                label += context.parsed.y + '%';
+              }
+              else if (label.includes("Hours")) {
+                label += context.parsed.y + 'h';
+              }
+              else if (label.includes("Precipitation")) {
+                label += context.parsed.y + 'mm';
+              }
+              else if (label.includes("Direction")) {
+                label += context.parsed.y + '°';
+              }  else if (label.includes("Wind")) {
+                  label += context.parsed.y + 'km/h';
+                } else {
+                label += context.parsed.y + '';
+              }
+            }
+            return label;
+          };
+          chartData.datasets[0].label = "UV Index";
+          chartData.datasets[0].data = wind_driection
+          chartData1.datasets[0].label = "Sun Hours"
+          
+
+          chartData1.datasets[0].data = dividedArray
+          Heading = "30 Days Summary"
+          SubHeading_1="Max UV"
+          Value_1=`${Math.max(...wind_driection)}`
+          SubHeading_2="Average UV"
+          Value_2=`${average}`
+          SubHeading_3="Highest Sun"
+          Value_3=`${Math.max(...dividedArray).toFixed(1)} h`
+
+      }
+      else {
+        chartData.labels = newHour
+        chartData1.labels = newHour
+
+        chartOptions.plugins.tooltip.callbacks.label = function(context) {
+          let label = context.dataset.label || '';
+          if (label) {
+            label += ': ';
+          }
+          if (context.parsed.y !== null) {
+            if (label.includes("Probability")) {
+              label += context.parsed.y + '%';
+            }
+            else if (label.includes("Hours")) {
+              label += context.parsed.y + 'h';
+            }
+            else if (label.includes("Precipitation")) {
+              label += context.parsed.y + 'mm';
+            }
+            else if (label.includes("Direction")) {
+              label += context.parsed.y + '°';
+            }  else if (label.includes("Wind")) {
+                label += context.parsed.y + 'km/h';
+              } else {
+              label += context.parsed.y + '°';
+            }
+          }
+          return label;
+        };
+        chartData.datasets[0].label = "UV Index";
+        chartData1.datasets[0].label = "UV Index Clear Sky";
+        chartData.datasets[0].data = temperatureMax
+        chartData1.datasets[0].data = temperatureMin
+        const MaxValue = Math.max(...temperatureMax)
+        const MinValue = Math.max(...temperatureMin)
+        
+        let sum = temperatureMax.reduce((total, num) => total + num, 0);
+        let average = (sum / temperatureMax.length).toFixed(1);
+        
+        Heading = "48 Hours Summary"
+        SubHeading_1="UV Index"
+        Value_1=`${MaxValue}`
+        SubHeading_2="Avg UV Index"
+        Value_2=`${average} `
+        SubHeading_3="Clear Sky UV"
+        Value_3=`${MinValue}`
+        let sum1 = temperatureMin.reduce((total, num) => total + num, 0);
+        let average1 = (sum1 / temperatureMax.length).toFixed(1);
+        SubHeading_4="Avg CLear Sky UV"
+        Value_4=`${average1}`
        }
   
     }
