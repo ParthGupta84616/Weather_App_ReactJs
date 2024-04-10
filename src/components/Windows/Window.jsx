@@ -87,7 +87,7 @@ function Window({ window, WeatherReports, data }) {
           wind_speed= daily[3]
     }
     else {
-      daily = [TotalReport.hourly.time, TotalReport.hourly.precipitation, TotalReport.hourly.precipitation_probability];
+      daily = [TotalReport.hourly.time, TotalReport.hourly.wind_direction_10m, TotalReport.hourly.wind_speed_10m];
       datesWithoutPrefix = daily[0].map(date => date.substring(5));
       temperatureMax = daily[1];
       temperatureMin = daily[2];
@@ -460,48 +460,57 @@ function Window({ window, WeatherReports, data }) {
           Value_4=`${average_speed}Km/h`
 
       }
-      // else {
-      //   chartData.labels = newHour
-      //   chartData1.labels = newHour
+      else {
+        chartData.labels = newHour
+        chartData1.labels = newHour
 
-      //   chartOptions.plugins.tooltip.callbacks.label = function(context) {
-      //     let label = context.dataset.label || '';
-      //     if (label) {
-      //       label += ': ';
-      //     }
-      //     if (context.parsed.y !== null) {
-      //       if (label.includes("Probability")) {
-      //         label += context.parsed.y + '%';
-      //       }
-      //       else if (label.includes("Hours")) {
-      //         label += context.parsed.y + 'h';
-      //       }
-      //       else if (label.includes("Precipitation")) {
-      //         label += context.parsed.y + 'mm';
-      //       } else {
-      //         label += context.parsed.y + '°C';
-      //       }
-      //     }
-      //     return label;
-      //   };
-      //   chartData.datasets[0].label = "Precipitation";
-      //   chartData1.datasets[0].label = "Precipitation Probability "
-      //   chartData.datasets[0].data = temperatureMax
-      //   chartData1.datasets[0].data = temperatureMin
-      //   const MaxValue = Math.max(...temperatureMax)
-      //   const MinValue = Math.max(...temperatureMin)
-      //   const PrehouSum = temperatureMax.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        chartOptions.plugins.tooltip.callbacks.label = function(context) {
+          let label = context.dataset.label || '';
+          if (label) {
+            label += ': ';
+          }
+          if (context.parsed.y !== null) {
+            if (label.includes("Probability")) {
+              label += context.parsed.y + '%';
+            }
+            else if (label.includes("Hours")) {
+              label += context.parsed.y + 'h';
+            }
+            else if (label.includes("Precipitation")) {
+              label += context.parsed.y + 'mm';
+            }
+            else if (label.includes("Direction")) {
+              label += context.parsed.y + '°';
+            }  else if (label.includes("Wind")) {
+                label += context.parsed.y + 'km/h';
+              } else {
+              label += context.parsed.y + '°';
+            }
+          }
+          return label;
+        };
+        chartData.datasets[0].label = "Wind Direction";
+        chartData1.datasets[0].label = "Wind Speed";
+        chartData.datasets[0].data = temperatureMax
+        chartData1.datasets[0].data = temperatureMin
+        const MaxValue = Math.max(...temperatureMax)
+        const MinValue = Math.max(...temperatureMin)
         
-      //   Heading = "48 Hours Summary"
-      //   SubHeading_1="Precipi."
-      //   Value_1=`${MaxValue} mm`
-      //   SubHeading_2="Precipi. Prob."
-      //   Value_2=`${MinValue} %`
-      //   SubHeading_3="Total Precipi"
-      //   Value_3=`${PrehouSum} mm`
-      //   SubHeading_4="Total Precipi. Prob."
-      //   Value_4=`${temperatureMin.reduce((accumulator, currentValue) => accumulator + currentValue, 0)} %`
-      // }
+        let sum = temperatureMax.reduce((total, num) => total + num, 0);
+        let average = (sum / temperatureMax.length).toFixed(1);
+        
+        Heading = "48 Hours Summary"
+        SubHeading_1="Direction Max"
+        Value_1=`${MaxValue} °`
+        SubHeading_2="Avg Direction"
+        Value_2=`${average} °`
+        SubHeading_3="Max Speed"
+        Value_3=`${MinValue} Km/h`
+        let sum1 = temperatureMin.reduce((total, num) => total + num, 0);
+        let average1 = (sum1 / temperatureMax.length).toFixed(1);
+        SubHeading_4="Avg Speed"
+        Value_4=`${average1} Km/h`
+       }
   
     }
 
