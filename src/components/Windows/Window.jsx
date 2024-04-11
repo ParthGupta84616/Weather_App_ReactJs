@@ -112,8 +112,6 @@ function Window({ window, WeatherReports, data }) {
     }
   }
 
-    console.log(Chart);
-    console.log(TotalReport);
     
     
     let chartData = {};
@@ -600,7 +598,7 @@ function Window({ window, WeatherReports, data }) {
             }  else if (label.includes("Wind")) {
                 label += context.parsed.y + 'km/h';
               } else {
-              label += context.parsed.y + '°';
+              label += context.parsed.y + '';
             }
           }
           return label;

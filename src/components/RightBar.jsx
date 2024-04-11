@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import sunny from "../images/sunny.png"; 
 import seacrh from "../images/search.png"
 import RightBottom from './RightBottom';
@@ -11,7 +12,6 @@ import  Rain from "../Icons/Rain.png"
 import  Smoke from "../Icons/Smoke.png"
 import  Snow from "../Icons/Snow.png"
 import  Thunderstrome from "../Icons/Thunderstrome.png"
-
 
 function RightBar({ data, search , count }) {
     const [searchCity, setSearchCity] = useState(null); 
@@ -64,6 +64,7 @@ function RightBar({ data, search , count }) {
     const handleClick = () => {
         search(searchCity); 
         setSearchCity("")
+
         setCount(Count+1)
         count(Count)
     }

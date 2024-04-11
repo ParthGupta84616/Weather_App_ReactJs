@@ -6,7 +6,7 @@ import loading from "./images/Loading.jpg"
 import { showError } from './components/Functions';
 import NavBar from './components/NavBar';
 import Window from './components/Windows/Window';
-
+import window_bg from "./images/Window.jpg"
 function App() {
   const bg = `url(${bg1})`;
   const loadingbg = loading;
@@ -140,11 +140,13 @@ const WeatherReport = (lat, lon) => {
             throw error; 
         });
 };
-  useEffect(() => {
-    if (place) {
-      inputPosition(place);
-    }
-  },[place] );
+useEffect(() => {
+  if (place) {
+    inputPosition(place);
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [place]);
+
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -165,7 +167,7 @@ const WeatherReport = (lat, lon) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimer(false);
-    }, 300);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [Counter]);
@@ -205,9 +207,12 @@ return (
                                                   </div>
                                               )}
     {window!=="Home"&&(
-      <div className="flex w-8/12 h-3/4 border-slate-700 rounded-xl border-2">
-        <Window window={window} WeatherReports={weatherReports} data={data}/>
-      </div>
+     <div className="flex w-8/12 h-3/4 border-slate-700 rounded-xl border-2" style={{ backgroundImage: `url(${window_bg})`, backgroundSize: '100% auto', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}>
+     <Window window={window} WeatherReports={weatherReports} data={data} />
+   </div>
+   
+   
+    
     )}
   </div>
 </>
