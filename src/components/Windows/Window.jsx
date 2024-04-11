@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
 import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 import { calculateTemperatureDifferences, calculateTemperatureVariation, modifyTime } from '../Functions';
 
 function Window({ window, WeatherReports, data }) {
   const [activeButton, setActiveButton] = useState('daily');
+
 
   const handleButtonClick = (buttonType) => {
     setActiveButton(buttonType);
